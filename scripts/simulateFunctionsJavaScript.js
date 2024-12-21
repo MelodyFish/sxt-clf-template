@@ -1,16 +1,19 @@
 const { simulateRequest, getDecodedResultLog, getRequestConfig } = require("../FunctionsSandboxLibrary")
 
 const runSimulation = async (requestConfig) => {
-  const { resultLog, result, success } = await simulateRequest(requestConfig)
-
-  console.log(`\n${resultLog}`)
-  if (success) {
-    console.log(`Value returned from source code: ${result}\n${getDecodedResultLog(requestConfig, result)}`)
-    return
+  try {
+    const { resultLog, result, success } = await simulateRequest(requestConfig);
+    console.log(`\n${resultLog}`);
+    if (success) {
+      console.log(`Value returned from source code: ${result}\n${getDecodedResultLog(requestConfig, result)}`);
+      return;
+    }
+  } catch (error) {
+    console.error("Error running simulation:", error);
   }
-}
+};
 
-;(async () => {
+(async () => {
   const unvalidatedRequestConfig = require("../Functions-request-config.js")
   const requestConfig = getRequestConfig(unvalidatedRequestConfig)
 
